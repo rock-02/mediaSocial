@@ -3,6 +3,8 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import PostCard from "../../components/post/PostCard";
 import UserReelCard from "../../components/reels/UserReelCard";
+import { useSelector } from "react-redux";
+import ProfileModal from "./ProfileModal";
 const tabs = [
   {
     value: "post",
@@ -28,8 +30,13 @@ const savedposts = [1, 1, 1];
 const reelsUser = [1, 1, 1, 1, 1];
 
 const Profile = () => {
+  const [open, setOpen] = React.useState(false);
+  const handleOpenProfileModal = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const { id } = useParams();
   const [value, setValue] = React.useState("post");
+
+  const { auth } = useSelector((store) => store);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -57,6 +64,7 @@ const Profile = () => {
               sx={{ borderRadius: "20px" }}
               variant="contained"
               color="primary"
+              onClick={handleOpenProfileModal}
             >
               Edit Profile
             </Button>
@@ -73,14 +81,18 @@ const Profile = () => {
 
         <div className="p-5">
           <div>
-            <h1 className="text-xl font-bold">John Doe</h1>
-            <p className="text-gray-500">@Developer</p>
+            <h1 className="text-xl font-bold">
+              {auth.user.firstName + " " + auth.user.lastName}
+            </h1>
+            <p className="text-gray-500">
+              {"@" + auth?.user?.firstName + "_" + auth?.user?.lastName}
+            </p>
           </div>
 
           <div className="flex gap-3">
-            <span>41 posts</span>
-            <span>150 followers</span>
-            <span>31 following</span>
+            <span>{auth?.user.following.length} posts</span>
+            <span>{auth?.user.followers.length} followers</span>
+            <span>{auth?.user.following.length} following</span>
           </div>
           <div className="mt-2">
             <p>
@@ -158,6 +170,10 @@ const Profile = () => {
           </div>
         </section>
       </div>
+
+      <section>
+        <ProfileModal open={open} handleClose={handleClose} />
+      </section>
     </Card>
   );
 };

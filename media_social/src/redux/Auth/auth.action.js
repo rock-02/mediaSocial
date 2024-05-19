@@ -1,5 +1,5 @@
 import axios from "axios";
-const { API_BASE_URL } = require("../../config/api");
+const { API_BASE_URL, api } = require("../../config/api");
 const {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -7,6 +7,12 @@ const {
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
   REGISTER_FAILURE,
+  GET_PROFILE_REQUEST,
+  GET_PROFILE_SUCCESS,
+  GET_PROFILE_FAILURE,
+  UPDATE_PROFILE_REQUEST,
+  UPDATE_PROFILE_SUCCESS,
+  UPDATE_PROFILE_FAILURE,
 } = require("./auth.authType");
 
 export const loginUserAction = (loginData) => async (dispatch) => {
@@ -18,7 +24,7 @@ export const loginUserAction = (loginData) => async (dispatch) => {
     console.log("Login Data", loginData);
 
     const { data } = await axios.post(`${API_BASE_URL}/auth/signin`, loginData);
-
+    console.log("res data", data);
     if (data.token) {
       localStorage.setItem("jwt", data.token);
     }
@@ -60,6 +66,54 @@ export const registerUserAction = (loginData) => async (dispatch) => {
     console.log("-------------Error----------", error);
     dispatch({
       type: REGISTER_FAILURE,
+      payload: error,
+    });
+  }
+};
+
+export const getProfileAction = (jwt) => async (dispatch) => {
+  try {
+    dispatch({
+      type: GET_PROFILE_REQUEST,
+    });
+
+    const { data } = await axios.get(`${API_BASE_URL}/api/users/profile`, {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    });
+    console.log("_________Profile_________", data);
+    dispatch({
+      type: GET_PROFILE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    console.log("-------------Error----------", error);
+    dispatch({
+      type: GET_PROFILE_FAILURE,
+      payload: error,
+    });
+  }
+};
+
+export const updateProfileAction = (reqData) => async (dispatch) => {
+  try {
+    dispatch({
+      type: UPDATE_PROFILE_REQUEST,
+    });
+
+    const { data } = await api.put(`${API_BASE_URL}/api/users`, reqData);
+
+    console.log("Register Success", data);
+
+    dispatch({
+      type: UPDATE_PROFILE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    console.log("-------------Error----------", error);
+    dispatch({
+      type: UPDATE_PROFILE_FAILURE,
       payload: error,
     });
   }

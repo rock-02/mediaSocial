@@ -45,7 +45,7 @@ export const navigationMenu = [
   },
   {
     title: "Profile",
-    path: "/profile",
+    path: "/profile/1",
     icon: <AccountCircleIcon />,
   },
 ];

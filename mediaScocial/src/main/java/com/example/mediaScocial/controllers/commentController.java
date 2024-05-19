@@ -15,7 +15,6 @@ import com.example.mediaScocial.config.jwtProvider;
 import com.example.mediaScocial.repositories.userRepository;
 import com.example.mediaScocial.services.commentService;
 
-
 @RestController
 public class commentController {
     @Autowired

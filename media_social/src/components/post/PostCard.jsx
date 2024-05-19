@@ -5,6 +5,7 @@ import {
   CardContent,
   CardHeader,
   CardMedia,
+  Divider,
   IconButton,
   Typography,
 } from "@mui/material";
@@ -16,13 +17,39 @@ import ShareIcon from "@mui/icons-material/Share";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
-const PostCard = () => {
+import { useDispatch } from "react-redux";
+import {
+  createCommentAction,
+  getAllPostAction,
+  likePostAction,
+} from "../../redux/Post/post.action";
+const PostCard = ({ item }) => {
+  const [showComment, setShowComment] = React.useState(false);
+  const [content, setContent] = React.useState("");
+  const [isLiked, setIsLiked] = React.useState(false);
+  const dispatch = useDispatch();
+  const handleComment = () => {
+    const reqdata = {
+      postId: item.postId,
+      data: {
+        content: content,
+      },
+    };
+    console.log(reqdata);
+    dispatch(createCommentAction(reqdata));
+    dispatch(getAllPostAction());
+  };
+
+  const handleLikePost = () => {
+    // setIsLiked(true);
+    dispatch(likePostAction(item.postId));
+  };
   return (
     <Card className="">
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
-            R
+            {item?.user?.firstName[0].toUpperCase()}
           </Avatar>
         }
         action={
@@ -30,31 +57,41 @@ const PostCard = () => {
             <MoreVertIcon />
           </IconButton>
         }
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
+        title={item?.user?.firstName + " " + item?.user?.lastName}
+        subheader={
+          "@" +
+          item?.user?.firstName.toLowerCase() +
+          "_" +
+          item?.user?.lastName.toLowerCase()
+        }
       />
       <CardMedia
         component="img"
-        sx={{ height: 380 }}
-        image="https://cdn.pixabay.com/photo/2023/02/08/18/36/tawny-owl-7777285_640.jpg"
+        className="object-cover"
+        sx={{ height: 500 }}
+        image={item?.image}
         alt="Paella dish"
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the
-          mussels, if you like.
+          {item?.caption}
         </Typography>
       </CardContent>
       <CardActions disableSpacing className="flex justify-between">
         <div>
-          <IconButton>
-            {true ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+          <IconButton onClick={handleLikePost}>
+            {isLiked ? (
+              <FavoriteIcon
+                style={{ backgroundColor: "red", border: "2px solid black" }}
+              />
+            ) : (
+              <FavoriteBorderIcon />
+            )}
           </IconButton>
           <IconButton>
             <ShareIcon />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={() => setShowComment(!showComment)}>
             <ChatBubbleOutlineIcon />
           </IconButton>
         </div>
@@ -64,6 +101,60 @@ const PostCard = () => {
           </IconButton>
         </div>
       </CardActions>
+      {showComment && (
+        <section>
+          <div className="flex items-center space-x-5 mx-3 my-5">
+            <Avatar />
+            <input
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  handleComment();
+                }
+              }}
+              placeholder="Write a comment"
+              type="text"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              className="w-full outline-none border-2 border-gray-300 rounded-full p-2"
+            />
+          </div>
+          <Divider />
+          {item?.comments.map((comment, index) => (
+            <div key={comment?.id} className="mx-3 space-y-2 my-5 text-xs">
+              <div className="flex justify-between items-center">
+                <div
+                  className="flex items-start space-x-5  px-2 py-3 border-[#4f4d4d]"
+                  style={{ borderRadius: "10px" }}
+                >
+                  <Avatar
+                    sx={{
+                      height: "2.5rem",
+                      width: "2.5rem",
+                      fontSize: "1.2rem",
+                      bgcolor: "blue",
+                      fontColor: "blue",
+                    }}
+                  >
+                    {comment?.user?.firstName[0].toUpperCase()}
+                  </Avatar>
+                  <div>
+                    <p className="text-xs font-serif font-medium">
+                      {"@" +
+                        comment?.user?.firstName +
+                        "_" +
+                        comment?.user?.lastName}
+                    </p>
+                    <p className="text-sm">{comment?.content}</p>
+                  </div>
+                </div>
+                <IconButton>
+                  <FavoriteBorderIcon />
+                </IconButton>
+              </div>
+            </div>
+          ))}
+        </section>
+      )}
     </Card>
   );
 };

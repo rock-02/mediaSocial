@@ -29,7 +29,7 @@ public class postController {
 
     private userService userService;
 
-    @PostMapping("/posts/user")
+    @PostMapping("/api/posts")
     public ResponseEntity<Post> createNewPost(@RequestBody Post post, @RequestHeader("Authorization") String token) {
         try {
             String email = jwtProvider.getEmailFromJwtToken(token);
@@ -54,7 +54,7 @@ public class postController {
         }
     }
 
-    @GetMapping("/posts")
+    @GetMapping("/api/posts")
     public ResponseEntity<List<Post>> getAllPost() {
         try {
             List<Post> posts = postService.getAllPost();
@@ -65,7 +65,7 @@ public class postController {
         }
     }
 
-    @GetMapping("/posts/users/{userId}")
+    @GetMapping("/api/posts/users/{userId}")
     public ResponseEntity<List<Post>> getPostByUserId(@PathVariable("userId") Integer userId) {
         try {
             List<Post> posts = postService.findPostByUserId(userId);
@@ -105,7 +105,7 @@ public class postController {
         }
     }
 
-    @PutMapping("/posts/like/{postId}/user")
+    @PutMapping("/api/posts/like/{postId}")
     public ResponseEntity<Post> likePost(@PathVariable("postId") Integer postId,
             @RequestHeader("Authorization") String token) {
         try {

@@ -2,14 +2,27 @@ import React from "react";
 import { navigationMenu } from "./SideBarNavigation";
 import { Avatar, Button, Card, Divider, Menu, MenuItem } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 const SideBar = () => {
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  const { auth } = useSelector((store) => store);
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handlenavigate = (item) => {
+    if (item.title === "Profile") navigate(`/profile/${auth.user?.id}`);
+    else if (item.title === "Message") navigate(`/message`);
+    else if (item.title === "Notifications") navigate(`/notification`);
+    else if (item.title === "Reels") navigate(`/reels`);
+    else if (item.title === "Create Reel") navigate(`/create-reels`);
+    else if (item.title === "Explore") navigate(`/explore`);
   };
 
   return (
@@ -22,6 +35,7 @@ const SideBar = () => {
         <div className="space-y-8">
           {navigationMenu.map((item) => (
             <div
+              onClick={() => handlenavigate(item)}
               key={item.title}
               className="flex space-x-3 cursor-pointer items-center"
             >
@@ -39,8 +53,14 @@ const SideBar = () => {
             alt="Remy Sharp"
           />
           <div>
-            <p className="font-bold">codewithZOsh</p>
-            <p className="opacity-70">@codewithZOsh</p>
+            <p className="font-bold">
+              {" "}
+              {auth.user.firstName + " " + auth.user.lastName}
+            </p>
+            <p className="opacity-70">
+              {" "}
+              {"@" + auth.user.firstName + "_" + auth.user.lastName}
+            </p>
           </div>
         </div>
         <Button

@@ -5,18 +5,24 @@ const {
   REGISTER_FAILURE,
   REGISTER_SUCCESS,
   REGISTER_REQUEST,
+  GET_PROFILE_SUCCESS,
+  GET_PROFILE_REQUEST,
+  UPDATE_PROFILE_REQUEST,
 } = require("./auth.authType");
 
 const initialState = {
   jwt: null,
   loading: false,
   error: null,
+  user: null,
 };
 
 export const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_REQUEST:
     case REGISTER_REQUEST:
+    case GET_PROFILE_REQUEST:
+    case UPDATE_PROFILE_REQUEST:
       return {
         ...state,
         loading: true,
@@ -29,6 +35,8 @@ export const authReducer = (state = initialState, action) => {
         loading: false,
         jwt: action.payload,
       };
+    case GET_PROFILE_SUCCESS:
+      return { ...state, loading: false, error: null, user: action.payload };
     case LOGIN_FAILURE:
     case REGISTER_FAILURE:
       return {
