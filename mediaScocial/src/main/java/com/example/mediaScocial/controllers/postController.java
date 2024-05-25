@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.mediaScocial.Enity.Post;
+import com.example.mediaScocial.Enity.User;
 import com.example.mediaScocial.config.jwtProvider;
 import com.example.mediaScocial.services.postService;
 import com.example.mediaScocial.services.userService;
@@ -110,9 +111,21 @@ public class postController {
             @RequestHeader("Authorization") String token) {
         try {
 
+            System.out.println(postId);
+            System.out.println();
+            System.out.println();
+            System.out.println();
+
             String email = jwtProvider.getEmailFromJwtToken(token);
-            Integer userId = userService.findUserByEmail(email).getId();
-            Post post = postService.likePost(postId, userId);
+            User user = userService.findUserByJwt(token);
+
+            System.out.println(email + "   " + user);
+            System.out.println();
+            System.out.println();
+            System.out.println();
+            System.out.println();
+            System.out.println();
+            Post post = postService.likePost(postId, user);
             return new ResponseEntity<>(post, HttpStatus.ACCEPTED);
         } catch (Exception e) {
             System.out.println(e.getMessage());

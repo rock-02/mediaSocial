@@ -5,6 +5,7 @@ const uplod_preset = "media-social";
 export const uploadToCloudinary = async (file, fileType) => {
   if (file && fileType) {
     const data = new FormData();
+    console.log(file, "file");
     data.append("file", file);
     data.append("upload_preset", uplod_preset);
     data.append("cloud_name", CLOUD_NAME);

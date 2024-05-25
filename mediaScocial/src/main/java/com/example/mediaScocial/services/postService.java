@@ -2,6 +2,7 @@ package com.example.mediaScocial.services;
 
 import java.util.List;
 import com.example.mediaScocial.Enity.Post;
+import com.example.mediaScocial.Enity.User;
 
 public interface postService {
 
@@ -17,7 +18,7 @@ public interface postService {
 
     public Post savedPost(Integer userId, Integer postId) throws Exception;
 
-    public Post likePost(Integer postId, Integer userId) throws Exception;
+    public Post likePost(Integer postId, User user) throws Exception;
 
     public List<Post> getSavedPosts(Integer userId) throws Exception;
 

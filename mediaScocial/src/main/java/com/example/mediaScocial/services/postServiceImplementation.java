@@ -114,8 +114,7 @@ public class postServiceImplementation implements postService {
     }
 
     @Override
-    public Post likePost(Integer postId, Integer userId) throws Exception {
-        User user = userService.findUserById(userId);
+    public Post likePost(Integer postId, User user) throws Exception {
 
         Post post = findPostById(postId);
 
@@ -124,8 +123,9 @@ public class postServiceImplementation implements postService {
         } else {
             post.getLikes().add(user);
         }
+        Post savedPost = postRepository.save(post);
 
-        return postRepository.save(post);
+        return savedPost;
     }
 
     @Override

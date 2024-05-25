@@ -13,6 +13,9 @@ const {
   UPDATE_PROFILE_REQUEST,
   UPDATE_PROFILE_SUCCESS,
   UPDATE_PROFILE_FAILURE,
+  SEARCH_USER_REQUEST,
+  SEARCH_USER_SUCCESS,
+  SEARCH_USER_FAILURE,
 } = require("./auth.authType");
 
 export const loginUserAction = (loginData) => async (dispatch) => {
@@ -114,6 +117,30 @@ export const updateProfileAction = (reqData) => async (dispatch) => {
     console.log("-------------Error----------", error);
     dispatch({
       type: UPDATE_PROFILE_FAILURE,
+      payload: error,
+    });
+  }
+};
+
+export const searchUserAction = (query) => async (dispatch) => {
+  try {
+    dispatch({
+      type: SEARCH_USER_REQUEST,
+    });
+
+    const { data } = await api.get(
+      `${API_BASE_URL}/api/users/search?query=${query}`
+    );
+
+    // console.log("Search User Success", data);
+    dispatch({
+      type: SEARCH_USER_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    console.log("-------------Error----------", error);
+    dispatch({
+      type: SEARCH_USER_FAILURE,
       payload: error,
     });
   }

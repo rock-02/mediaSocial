@@ -21,9 +21,7 @@ const HomePage = () => {
     dispatch(getProfileAction(jwt));
   }, []);
 
-  useEffect(() => {
-    dispatch(getAllPostAction());
-  }, []);
+
   const location = useLocation();
   return (
     <div className="px-20">

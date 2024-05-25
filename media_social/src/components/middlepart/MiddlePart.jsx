@@ -7,19 +7,22 @@ import ArticleIcon from "@mui/icons-material/Article";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import PostCard from "../post/PostCard";
 import CreatePostModal from "../createPost/CreatePostModal";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllPostAction } from "../../redux/Post/post.action";
 
-const story = [1, 1, 1, 1, 1];
+const story = [1, 1, 1, 1];
 const posts = [1, 1, 0, 1, 1, 1, 1];
 
 const MiddlePart = () => {
   const { post } = useSelector((store) => store);
   const [open, setOpen] = React.useState(false);
-
+  const dispatch = useDispatch();
   const handlePostCreateModel = () => setOpen(true);
   const handleClose = () => setOpen(false);
   console.log(post.posts);
-
+  useEffect(() => {
+    dispatch(getAllPostAction());
+  }, [post.like]);
   return (
     <div className="px-20">
       <section className="p-5 flex items-center rounded-b-md">
@@ -29,7 +32,7 @@ const MiddlePart = () => {
           </Avatar>
           <p>New</p>
         </div>
-        {story.map((item, index) => (
+        {story?.map((item, index) => (
           <StoryCircle key={index} />
         ))}
       </section>
@@ -65,7 +68,7 @@ const MiddlePart = () => {
         </div>
       </Card>
       <div className="mt-5 space-y-5">
-        {post.posts.map((item, index) => (
+        {post.posts?.map((item, index) => (
           <PostCard key={item.postId} item={item} />
         ))}
       </div>

@@ -8,6 +8,7 @@ const {
   GET_PROFILE_SUCCESS,
   GET_PROFILE_REQUEST,
   UPDATE_PROFILE_REQUEST,
+  SEARCH_USER_SUCCESS,
 } = require("./auth.authType");
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
   loading: false,
   error: null,
   user: null,
+  searchUser: [],
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -37,6 +39,13 @@ export const authReducer = (state = initialState, action) => {
       };
     case GET_PROFILE_SUCCESS:
       return { ...state, loading: false, error: null, user: action.payload };
+    case SEARCH_USER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        searchUser: action.payload,
+      };
     case LOGIN_FAILURE:
     case REGISTER_FAILURE:
       return {

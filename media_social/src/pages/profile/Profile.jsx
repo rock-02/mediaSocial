@@ -5,6 +5,7 @@ import PostCard from "../../components/post/PostCard";
 import UserReelCard from "../../components/reels/UserReelCard";
 import { useSelector } from "react-redux";
 import ProfileModal from "./ProfileModal";
+import { store } from "../../redux/store";
 const tabs = [
   {
     value: "post",
@@ -24,16 +25,17 @@ const tabs = [
   },
 ];
 
-const dpost = [1, 1, 1, 1, 1, 1];
-const savedposts = [1, 1, 1];
+const dpost = [];
+const savedposts = [];
 
-const reelsUser = [1, 1, 1, 1, 1];
+const reelsUser = [];
 
 const Profile = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpenProfileModal = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const { id } = useParams();
+  const { post } = useSelector((store) => store);
   const [value, setValue] = React.useState("post");
 
   const { auth } = useSelector((store) => store);
@@ -119,7 +121,7 @@ const Profile = () => {
           <div className="flex justify-center">
             {value === "post" ? (
               <div className="space-y-5  w-[70%] my-10">
-                {dpost.map((item) => (
+                {post.posts.map((item) => (
                   <div className="border border-slate-500">
                     <PostCard />
                   </div>
@@ -132,7 +134,7 @@ const Profile = () => {
           <div className="flex justify-center">
             {value === "saved" ? (
               <div className="space-y-5  w-[70%] my-10">
-                {savedposts.map((item) => (
+                {auth?.user?.savedposts.map((item) => (
                   <div className="border border-slate-500">
                     <PostCard />
                   </div>

@@ -9,3 +9,4 @@ export const api = axios.create({
     Authorization: `Bearer ${jwt}`,
   },
 });
+
