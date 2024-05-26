@@ -24,6 +24,7 @@ import {
   likePostAction,
 } from "../../redux/Post/post.action";
 import { islikedByRequser } from "../../utils/isLikedByUser";
+import { useNavigate } from "react-router-dom";
 const PostCard = ({ item }) => {
   const [showComment, setShowComment] = React.useState(false);
   const [content, setContent] = React.useState("");
@@ -46,9 +47,11 @@ const PostCard = ({ item }) => {
     console.log(item.postId);
     dispatch(likePostAction(item.postId));
   };
+  const navigateToProfile = useNavigate();
   return (
     <Card className="">
       <CardHeader
+        onClick={() => navigateToProfile(`/profile/${item?.user?.id}`)}
         avatar={
           <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
             {item?.user?.firstName[0].toUpperCase()}

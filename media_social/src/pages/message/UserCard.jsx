@@ -8,8 +8,13 @@ const UserCard = ({ item }) => {
   const user =
     item.users[0].id === auth.user.id ? item.users[1] : item.users[0];
 
+  const lastMessage =
+    item.messages.length > 0
+      ? item.messages[item.messages.length - 1].message
+      : "message now...";
+
   return (
-    <div className="bg-slate-100   border border-[#e7e3e3] h-[5rem] flex items-center">
+    <div className="bg-slate-100 border border-[#e7e3e3] h-[5rem] flex items-center">
       <CardHeader
         className="w-full"
         avatar={
@@ -21,7 +26,10 @@ const UserCard = ({ item }) => {
               bgcolor: "#191c29",
               color: "rgb(88,199,250)",
             }}
-            src="https://cdn.pixabay.com/photo/2020/10/11/19/51/cat-5646889_640.jpg"
+            src={
+              user.avatar ||
+              "https://cdn.pixabay.com/photo/2020/10/11/19/51/cat-5646889_640.jpg"
+            }
           />
         }
         action={
@@ -29,8 +37,8 @@ const UserCard = ({ item }) => {
             <MoreHorizIcon />
           </IconButton>
         }
-        title={user.firstName + " " + user.lastName}
-        subheader="message"
+        title={`${user.firstName} ${user.lastName}`}
+        subheader={lastMessage}
       />
     </div>
   );

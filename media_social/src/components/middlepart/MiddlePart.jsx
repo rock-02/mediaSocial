@@ -9,12 +9,13 @@ import PostCard from "../post/PostCard";
 import CreatePostModal from "../createPost/CreatePostModal";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllPostAction } from "../../redux/Post/post.action";
+import { GetSavedPostAction } from "../../redux/Auth/auth.action";
 
 const story = [1, 1, 1, 1];
 const posts = [1, 1, 0, 1, 1, 1, 1];
 
 const MiddlePart = () => {
-  const { post } = useSelector((store) => store);
+  const { post, auth } = useSelector((store) => store);
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
   const handlePostCreateModel = () => setOpen(true);
@@ -23,6 +24,7 @@ const MiddlePart = () => {
   useEffect(() => {
     dispatch(getAllPostAction());
   }, [post.like]);
+
   return (
     <div className="px-20">
       <section className="p-5 flex items-center rounded-b-md">

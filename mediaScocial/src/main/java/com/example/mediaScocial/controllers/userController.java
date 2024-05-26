@@ -25,6 +25,11 @@ public class userController {
     @Autowired
     private userRepository userRepository;
 
+    @GetMapping("/")
+    public String home() {
+        return "Hello World";
+    }
+
     @GetMapping("/api/users/{userId}")
     public User getUserById(@PathVariable("userId") Integer userId) {
         try {

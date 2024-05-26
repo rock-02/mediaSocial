@@ -21,7 +21,6 @@ const HomePage = () => {
     dispatch(getProfileAction(jwt));
   }, []);
 
-
   const location = useLocation();
   return (
     <div className="px-20">

@@ -21,7 +21,7 @@ const Login = () => {
   const handleSubmit = (values) => {
     console.log("submitted", values);
     dispatch(loginUserAction(values));
-    navigate("/")
+    navigate("/home");
   };
 
   return (

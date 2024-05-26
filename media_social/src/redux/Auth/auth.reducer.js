@@ -1,3 +1,8 @@
+import {
+  GET_SAVED_POST_FAILURE,
+  GET_SAVED_POST_SUCCESS,
+} from "../Post/post.actionType";
+
 const {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -17,6 +22,8 @@ const initialState = {
   error: null,
   user: null,
   searchUser: [],
+  savedPosts: [],
+  savePost: null,
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -45,6 +52,13 @@ export const authReducer = (state = initialState, action) => {
         loading: false,
         error: null,
         searchUser: action.payload,
+      };
+    case GET_SAVED_POST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        savedPosts: action.payload,
       };
     case LOGIN_FAILURE:
     case REGISTER_FAILURE:

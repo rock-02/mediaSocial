@@ -75,26 +75,8 @@ public class postServiceImplementation implements postService {
     @Override
     public List<Post> findPostByUserId(Integer userId) throws Exception {
 
-        // List<Post> posts = postRepository.findByUser(userId);
-
-        List<Post> posts = getAllPost();
-
-        System.out.println(posts);
-
-        List<Post> userPosts = new ArrayList<>();
-
-        for (Post post : posts) {
-            if (post.getUser().getId() == userId) {
-                userPosts.add(post);
-                System.out.println(post.getUser().getId() + " " + userId);
-            }
-        }
-
-        if (posts.isEmpty()) {
-            throw new Exception("No post found for user with Id : " + userId);
-        }
-
-        return userPosts;
+        List<Post> posts = postRepository.findByUserId(userId);
+        return posts;
     }
 
     @Override
